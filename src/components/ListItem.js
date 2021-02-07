@@ -11,4 +11,6 @@ const ListItem = ({ id, anime }) => {
   );
 };
 
+// link = https://www.youtube.com/watch?v={anime.trailer.id}
+
 export default ListItem;

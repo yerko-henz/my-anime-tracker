@@ -12,6 +12,13 @@ const ANIME_QUERY = gql`
         title {
           romaji
         }
+        coverImage {
+          large
+        }
+        averageScore
+        trailer {
+          id
+        }
       }
     }
   }
