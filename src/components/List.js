@@ -36,7 +36,7 @@ const List = () => {
   if (error) return console.log(error);
 
   return (
-    <ul>
+    <ul style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)" }}>
       {data.Page.media.map((anime) => (
         <ListItem key={anime.id} anime={anime} />
       ))}
