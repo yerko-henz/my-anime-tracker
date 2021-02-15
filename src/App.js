@@ -14,8 +14,6 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <Router>
-        <div>Anime List</div>
-
         <Route exact path="/" component={List} />
         <Route exact path="/anime/:title" component={Anime} />
       </Router>
