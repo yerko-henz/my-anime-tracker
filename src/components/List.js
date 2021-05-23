@@ -59,9 +59,15 @@ const yearOptions = () => {
 };
 
 const ANIME_QUERY = gql`
-  query AnimeList($season: MediaSeason, $year: Int) {
-    Page(page: 1, perPage: 30) {
-      media(season: $season, seasonYear: $year, sort: SCORE_DESC) {
+  query AnimeList($season: MediaSeason, $year: Int, $page: Int) {
+    Page(page: $page, perPage: 48) {
+      media(
+        season: $season
+        seasonYear: $year
+        sort: SCORE_DESC
+        isAdult: false
+        format: TV
+      ) {
         id
         idMal
         title {
@@ -81,10 +87,10 @@ const ANIME_QUERY = gql`
 
 const List = () => {
   const [season, setSeason] = useState("SUMMER");
-  const [year, setYear] = useState(2020);
+  const [year, setYear] = useState(2021);
 
   const { loading, error, data } = useQuery(ANIME_QUERY, {
-    variables: { season, year },
+    variables: { season, year, page: 1 },
   });
 
   if (loading) return <h4>Loading...</h4>;
@@ -92,20 +98,26 @@ const List = () => {
 
   return (
     <Wrapper>
-      <Flex>
-        <Select
-          className="react-select"
-          onChange={({ value }) => setSeason(value)}
-          options={seasonOptions}
-          defaultValue={{ value: season, label: season }}
-        />
+      <Flex direction="column">
+        {season === "WINTER" && <div>December - February</div>}
+        {season === "SPRING" && <div>March - May</div>}
+        {season === "SUMMER" && <div>June - August</div>}
+        {season === "FALL" && <div>September - November</div>}
+        <Flex>
+          <Select
+            className="react-select"
+            onChange={({ value }) => setSeason(value)}
+            options={seasonOptions}
+            defaultValue={{ value: season, label: season }}
+          />
 
-        <Select
-          className="react-select"
-          onChange={({ value }) => setYear(value)}
-          options={yearOptions()}
-          defaultValue={{ value: year, label: year }}
-        />
+          <Select
+            className="react-select"
+            onChange={({ value }) => setYear(value)}
+            options={yearOptions()}
+            defaultValue={{ value: year, label: year }}
+          />
+        </Flex>
       </Flex>
 
       <h3>

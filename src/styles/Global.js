@@ -15,6 +15,7 @@ export const StyledA = styled.a`
 
 Flex.defaultProps = {
   direction: "row",
+  align: "center",
 };
 
 Flex.propTypes = {
