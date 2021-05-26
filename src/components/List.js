@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import styled from "styled-components";
 import Select from "react-select";
@@ -30,16 +30,16 @@ const Wrapper = styled.div`
 
 const seasonOptions = [
   {
-    label: "SUMMER",
-    value: "SUMMER",
-  },
-  {
     label: "WINTER",
     value: "WINTER",
   },
   {
     label: "SPRING",
     value: "SPRING",
+  },
+  {
+    label: "SUMMER",
+    value: "SUMMER",
   },
   {
     label: "FALL",
@@ -64,7 +64,7 @@ const ANIME_QUERY = gql`
       media(
         season: $season
         seasonYear: $year
-        sort: SCORE_DESC
+        sort: POPULARITY_DESC
         isAdult: false
         format: TV
       ) {
