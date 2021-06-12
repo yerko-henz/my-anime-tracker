@@ -1,6 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { useQuery, gql, fromPromise } from "@apollo/client";
-import { useSelector } from "react-redux";
+import { useQuery, gql } from "@apollo/client";
+import { useSelector, useDispatch } from "react-redux";
+import styled from "styled-components";
+
+import { getLSAnime, addEpisode } from "../reducers/myAnime";
+
+const MyAnimeWrapper = styled.ul`
+  list-style: none;
+  padding: 0;
+
+  li {
+    padding: 1rem;
+    margin: 1rem;
+    border: 1px solid #444;
+    border-radius: 8px;
+  }
+`;
 
 const SEARCH_RESULTS = gql`
   query ($search: String) {
@@ -20,14 +35,16 @@ const MyAnime = () => {
 
   const myAnime = useSelector((state) => state.myAnime.list);
 
-  const { loading, error, data } = useQuery(SEARCH_RESULTS, {
-    variables: { search },
-    fetchPolicy: "no-cache",
-  });
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    console.log("d", data, "search", search);
-  }, [data]);
+  // const { loading, error, data } = useQuery(SEARCH_RESULTS, {
+  //   variables: { search },
+  //   fetchPolicy: "no-cache",
+  // });
+
+  // useEffect(() => {
+  //   console.log("d", data, "search", search);
+  // }, [data]);
 
   useEffect(() => {
     console.log("afas", myAnime);
@@ -35,14 +52,15 @@ const MyAnime = () => {
 
   useEffect(() => {
     console.log("all local storage", { ...localStorage });
+    dispatch(getLSAnime(localStorage));
   }, []);
 
-  if (error) return console.log(error);
+  // if (error) return console.log(error);
 
   return (
     <div>
-      <input value={search} onChange={(e) => setSearch(e.target.value)} />
-      {loading ? (
+      {/* <input value={search} onChange={(e) => setSearch(e.target.value)} /> */}
+      {/* {loading ? (
         <h4>Loading...</h4>
       ) : (
         <>
@@ -57,12 +75,30 @@ const MyAnime = () => {
             </div>
           )}
         </>
-      )}
-      <ul>
+      )} */}
+      <div>
         {myAnime.map((m) => (
-          <li key={m.id}>{m.title.romaji}</li>
+          <div
+            className="box mx-6"
+            key={m.id}
+            onClick={(e) => dispatch(addEpisode({ id: m.id, value: 1 }))}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              dispatch(addEpisode({ id: m.id, value: -1 }));
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <h3>{m.title.romaji}</h3>
+              <span>{`${m.watched} of ${m.episodes}`}</span>
+            </div>
+            <progress
+              className="progress is-success is-small mt-4"
+              value={m.watched}
+              max={m.episodes}
+            />
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };

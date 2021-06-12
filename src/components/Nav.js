@@ -1,27 +1,26 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-
-const Wrapper = styled.div`
-  margin-bottom: 1rem;
-  padding: 1rem 0;
-
-  a {
-    padding: 0.5rem;
-    text-decoration: none;
-    color: #000;
-    border: 1px solid #000;
-    border-radius: 8px;
-    margin: 1rem 1rem 0 0;
-  }
-`;
+import React, { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 const Nav = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    console.log("loc", location);
+  }, [location]);
+
+  const active = (link) => (location.pathname === link ? "is-active" : "");
+
   return (
-    <Wrapper>
-      <Link to="/">My anime</Link>
-      <Link to="/season">Season</Link>
-    </Wrapper>
+    <div class="tabs is-boxed is-medium is-centered">
+      <ul>
+        <li className={active("/")}>
+          <Link to="/">My anime</Link>
+        </li>
+        <li className={active("/season")}>
+          <Link to="/season">Season</Link>
+        </li>
+      </ul>
+    </div>
   );
 };
 

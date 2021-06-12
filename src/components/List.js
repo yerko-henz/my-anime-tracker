@@ -77,6 +77,7 @@ const ANIME_QUERY = gql`
           large
         }
         averageScore
+        episodes
         trailer {
           id
         }
