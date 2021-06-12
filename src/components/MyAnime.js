@@ -71,7 +71,7 @@ const MyAnime = () => {
                 <Flex justify="space-between">
                   <h3
                     onClick={() => setEpisodeWatched(anime.id, 1)}
-                    className="pointer"
+                    className="pointer no-double-click-selection"
                     onContextMenu={(e) => {
                       e.preventDefault();
                       setEpisodeWatched(anime.id, -1);

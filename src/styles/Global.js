@@ -9,6 +9,13 @@ export const GlobalStyle = createGlobalStyle`
   .modal-background{
     opacity: .5 !important;
   }
+
+  .no-double-click-selection{
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+  }
 `;
 
 export const Flex = styled.div`
