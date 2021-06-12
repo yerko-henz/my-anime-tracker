@@ -1,21 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useQuery, gql } from "@apollo/client";
 import { useSelector, useDispatch } from "react-redux";
-import styled from "styled-components";
 
-import { getLSAnime, addEpisode } from "../reducers/myAnime";
-
-const MyAnimeWrapper = styled.ul`
-  list-style: none;
-  padding: 0;
-
-  li {
-    padding: 1rem;
-    margin: 1rem;
-    border: 1px solid #444;
-    border-radius: 8px;
-  }
-`;
+import { addEpisode } from "../reducers/myAnime";
 
 const SEARCH_RESULTS = gql`
   query ($search: String) {
@@ -49,11 +36,6 @@ const MyAnime = () => {
   useEffect(() => {
     console.log("afas", myAnime);
   }, [myAnime]);
-
-  useEffect(() => {
-    console.log("all local storage", { ...localStorage });
-    dispatch(getLSAnime(localStorage));
-  }, []);
 
   // if (error) return console.log(error);
 

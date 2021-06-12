@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { act } from "react-dom/test-utils";
 
 export const slice = createSlice({
   name: "myAnime",
@@ -19,6 +18,7 @@ export const slice = createSlice({
       const animeSaved = {
         ...action.payload,
         watched: 0,
+        episodes: action.payload.episodes || "TBD",
       };
 
       state.list.push(animeSaved);
@@ -34,7 +34,8 @@ export const slice = createSlice({
       );
 
       const result = state.list[index].watched + action.payload.value;
-      if (result >= 0) {
+      console.log("result", result);
+      if (result >= 0 && result <= state.list[index].episodes) {
         state.list[index].watched += action.payload.value;
         localStorage.setItem(
           action.payload.id,
