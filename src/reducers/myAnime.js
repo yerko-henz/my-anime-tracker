@@ -25,7 +25,11 @@ export const slice = createSlice({
       localStorage.setItem(animeSaved.id, JSON.stringify(animeSaved));
     },
     deleteAnime: (state, action) => {
-      state.list.splice(action.payload, 1);
+      const index = state.list.findIndex(
+        (anime) => anime.id === action.payload.id
+      );
+
+      state.list.splice(index, 1);
       localStorage.removeItem(action.payload.id);
     },
     addEpisode: (state, action) => {

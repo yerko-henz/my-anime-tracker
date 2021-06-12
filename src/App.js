@@ -1,6 +1,7 @@
 import React from "react";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import { GlobalStyle } from "./styles/Global";
 
 import List from "./components/List";
 import MyAnime from "./components/MyAnime";
@@ -15,6 +16,7 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
+      <GlobalStyle />
       <Router>
         <Nav />
 
