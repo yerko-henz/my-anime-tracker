@@ -34,7 +34,13 @@ export const slice = createSlice({
       );
 
       const result = state.list[index].watched + action.payload.value;
-      if (result >= 0) state.list[index].watched += action.payload.value;
+      if (result >= 0) {
+        state.list[index].watched += action.payload.value;
+        localStorage.setItem(
+          action.payload.id,
+          JSON.stringify(state.list[index])
+        );
+      }
     },
   },
 });
