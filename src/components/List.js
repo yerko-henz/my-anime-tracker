@@ -81,6 +81,22 @@ const ANIME_QUERY = gql`
         trailer {
           id
         }
+        status
+        endDate {
+          year
+          month
+          day
+        }
+        airingSchedule(notYetAired: true) {
+          nodes {
+            episode
+            airingAt
+          }
+        }
+        nextAiringEpisode {
+          timeUntilAiring
+          episode
+        }
       }
     }
   }

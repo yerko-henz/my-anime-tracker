@@ -20,7 +20,7 @@ const Nav = () => {
   const active = (link) => (location.pathname === link ? "is-active" : "");
 
   return (
-    <div class="tabs is-boxed is-medium is-centered">
+    <div className="tabs is-boxed is-medium is-centered">
       <ul>
         <li className={active("/")}>
           <Link to="/">My anime</Link>

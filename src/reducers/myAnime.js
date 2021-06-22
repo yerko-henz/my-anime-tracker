@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { secondsToDate } from "../helpers";
 
 export const slice = createSlice({
   name: "myAnime",
@@ -15,12 +16,19 @@ export const slice = createSlice({
       state.list.push(...lsAnime);
     },
     saveAnime: (state, action) => {
+      const { nextAiringEpisode, watched, episodes } = action.payload;
+
       const animeSaved = {
         ...action.payload,
-        watched: 0,
-        episodes: action.payload.episodes || "TBD",
+        watched: watched || 0,
+        episodes: episodes || "TBD",
+        nextAiringEpisode: nextAiringEpisode
+          ? {
+              episode: nextAiringEpisode.episode,
+              timeUntilAiring: secondsToDate(nextAiringEpisode.timeUntilAiring),
+            }
+          : null,
       };
-
       state.list.push(animeSaved);
       localStorage.setItem(animeSaved.id, JSON.stringify(animeSaved));
     },
@@ -38,7 +46,7 @@ export const slice = createSlice({
       );
 
       const result = state.list[index].watched + action.payload.value;
-      console.log("result", result);
+
       if (result >= 0 && result <= state.list[index].episodes) {
         state.list[index].watched += action.payload.value;
         localStorage.setItem(
