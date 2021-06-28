@@ -23,6 +23,7 @@ export const Flex = styled.div`
   flex-direction: ${({ direction }) => direction};
   align-items: ${({ align }) => align};
   justify-content: ${({ justify }) => justify};
+  margin: ${({ margin }) => margin || 0};
 `;
 
 export const StyledA = styled.a`
@@ -55,6 +56,11 @@ export const Icon = styled.i`
 
     opacity: 0.5;
   }
+`;
+
+export const Img = styled.img`
+  width: 100%;
+  height: 350px;
 `;
 
 Flex.defaultProps = {
