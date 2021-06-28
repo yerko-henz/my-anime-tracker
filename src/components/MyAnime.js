@@ -9,26 +9,15 @@ import MyAnimeItem from "./MyAnimeItem.js";
 const ALL = "ALL";
 const COMPLETED = "COMPLETED";
 const DROPPED = "DROPPED";
-const WATCH = "WATCH";
+const WATCHING = "WATCHING";
+const PENDING = "PENDING";
 
-const tabOptions = [
-  {
-    value: ALL,
-    label: ALL,
-  },
-  {
-    value: COMPLETED,
-    label: COMPLETED,
-  },
-  {
-    value: DROPPED,
-    label: DROPPED,
-  },
-  {
-    value: WATCH,
-    label: WATCH,
-  },
-];
+const notFormatted = [ALL, WATCHING, PENDING, COMPLETED, DROPPED];
+
+const tabOptions = notFormatted.map((option) => ({
+  label: option,
+  value: option,
+}));
 
 const Wrapper = styled.div`
   width: 80%;
@@ -83,7 +72,8 @@ const MyAnime = () => {
   const allAnime = useSelector((state) => state.myAnime.list);
   const completedAnime = allAnime.filter((f) => f.tab === COMPLETED);
   const droppedAnime = allAnime.filter((f) => f.tab === DROPPED);
-  const watchAnime = allAnime.filter((f) => f.tab === WATCH);
+  const watchingAnime = allAnime.filter((f) => f.tab === WATCHING);
+  const pendingAnime = allAnime.filter((f) => f.tab === PENDING);
 
   const myAnime = () => {
     switch (currentTab) {
@@ -94,8 +84,10 @@ const MyAnime = () => {
         return completedAnime;
       case DROPPED:
         return droppedAnime;
-      case WATCH:
-        return watchAnime;
+      case WATCHING:
+        return watchingAnime;
+      case PENDING:
+        return pendingAnime;
     }
   };
 

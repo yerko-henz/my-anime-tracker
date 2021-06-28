@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { Grid, Flex, Button, Width, Icon, Img } from "../styles/Global";
@@ -10,7 +10,7 @@ import {
 
 const MyAnimeItem = ({ anime, tabOptions }) => {
   const [showModal, setShowModal] = useState({});
-  const [showOptions, setShowOptions] = useState(false);
+  const [formattedAnime, setFormattedAnime] = useState([]);
   const dispatch = useDispatch();
 
   function setEpisodeWatched(id, value) {
@@ -27,9 +27,13 @@ const MyAnimeItem = ({ anime, tabOptions }) => {
     }
   }
 
+  useEffect(() => {
+    setFormattedAnime(anime.map((m) => ({ ...m, showOptions: false })));
+  }, [anime]);
+
   return (
     <Grid margin="2rem 0 0 0">
-      {anime.map((anime) => (
+      {formattedAnime.map((anime) => (
         <>
           <Width width="95%" className="box my-0" key={anime.id}>
             <h3
@@ -70,13 +74,26 @@ const MyAnimeItem = ({ anime, tabOptions }) => {
                   <Icon className="mdi mdi-trash-can-outline" size="17px" />
                 </span>
               </Button>
-              <div className={showOptions ? "dropdown is-active" : "dropdown"}>
+              <div
+                className={
+                  anime.showOptions ? "dropdown is-active" : "dropdown"
+                }
+              >
                 <div class="dropdown-trigger">
                   <Button
-                    onClick={() => setShowOptions(!showOptions)}
+                    onClick={() =>
+                      setFormattedAnime(
+                        formattedAnime.map((m) => {
+                          if (m.id === anime.id) {
+                            return { ...m, showOptions: !anime.showOptions };
+                          }
+                          return m;
+                        })
+                      )
+                    }
                     class="button"
                     aria-haspopup="true"
-                    aria-controls="dropdown-menu2"
+                    aria-controls={anime.id}
                   >
                     <span className="icon has-text-warning">
                       <Icon
@@ -86,24 +103,27 @@ const MyAnimeItem = ({ anime, tabOptions }) => {
                     </span>
                   </Button>{" "}
                 </div>
-                <div class="dropdown-menu" id="dropdown-menu2" role="menu">
+                <div class="dropdown-menu" id={anime.id} role="menu">
                   <div class="dropdown-content">
-                    {tabOptions.map((tab) => (
-                      <>
-                        <div
-                          class="dropdown-item"
-                          onClick={() =>
-                            dispatch(
-                              changeAnimeStatus({
-                                id: anime.id,
-                                tab: tab.label,
-                              })
-                            )
-                          }
-                        >{`TO ${tab.label}`}</div>
-                        <hr class="dropdown-divider" />
-                      </>
-                    ))}
+                    {tabOptions
+                      .filter((f) => f.value !== "ALL")
+                      .filter((f) => f.value !== anime.tab)
+                      .map((tab) => (
+                        <div key={tab.value}>
+                          <div
+                            class="dropdown-item"
+                            onClick={() =>
+                              dispatch(
+                                changeAnimeStatus({
+                                  id: anime.id,
+                                  tab: tab.label,
+                                })
+                              )
+                            }
+                          >{`TO ${tab.label}`}</div>
+                          <hr class="dropdown-divider" />
+                        </div>
+                      ))}
                   </div>
                 </div>
               </div>

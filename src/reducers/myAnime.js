@@ -28,7 +28,7 @@ export const slice = createSlice({
               timeUntilAiring: secondsToDate(nextAiringEpisode.timeUntilAiring),
             }
           : null,
-        tab: "all",
+        tab: "PENDING",
       };
       state.list.push(animeSaved);
       updateLocalStorage(animeSaved.id, animeSaved);
