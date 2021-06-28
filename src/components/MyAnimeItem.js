@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { Grid, Flex, Button, Width, Icon, Img } from "../styles/Global";
-import { addEpisode, deleteAnime } from "../reducers/myAnime";
+import {
+  addEpisode,
+  deleteAnime,
+  changeAnimeStatus,
+} from "../reducers/myAnime";
 
-const MyAnimeItem = ({ anime }) => {
+const MyAnimeItem = ({ anime, tabOptions }) => {
   const [showModal, setShowModal] = useState({});
   const [showOptions, setShowOptions] = useState(false);
   const dispatch = useDispatch();
@@ -84,14 +88,22 @@ const MyAnimeItem = ({ anime }) => {
                 </div>
                 <div class="dropdown-menu" id="dropdown-menu2" role="menu">
                   <div class="dropdown-content">
-                    <a class="dropdown-item">To all</a>
-                    <hr class="dropdown-divider" />
-                    <hr class="dropdown-divider" />
-                    <a class="dropdown-item">To completed</a>
-                    <hr class="dropdown-divider" />
-                    <a class="dropdown-item">To dropped</a>
-                    <hr class="dropdown-divider" />
-                    <a class="dropdown-item">To watch</a>
+                    {tabOptions.map((tab) => (
+                      <>
+                        <div
+                          class="dropdown-item"
+                          onClick={() =>
+                            dispatch(
+                              changeAnimeStatus({
+                                id: anime.id,
+                                tab: tab.label,
+                              })
+                            )
+                          }
+                        >{`TO ${tab.label}`}</div>
+                        <hr class="dropdown-divider" />
+                      </>
+                    ))}
                   </div>
                 </div>
               </div>

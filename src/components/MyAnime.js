@@ -6,22 +6,27 @@ import Select from "react-select";
 
 import MyAnimeItem from "./MyAnimeItem.js";
 
+const ALL = "ALL";
+const COMPLETED = "COMPLETED";
+const DROPPED = "DROPPED";
+const WATCH = "WATCH";
+
 const tabOptions = [
   {
-    value: "ALL",
-    label: "ALL",
+    value: ALL,
+    label: ALL,
   },
   {
-    value: "COMPLETED",
-    label: "COMPLETED",
+    value: COMPLETED,
+    label: COMPLETED,
   },
   {
-    value: "DROPPED",
-    label: "DROPPED",
+    value: DROPPED,
+    label: DROPPED,
   },
   {
-    value: "WATCH",
-    label: "WATCH",
+    value: WATCH,
+    label: WATCH,
   },
 ];
 
@@ -73,11 +78,28 @@ const REFRESH_SAVED_ANIME = gql`
 
 const MyAnime = () => {
   const [search, setSearch] = useState("");
-  const [currentTab, setCurrentTab] = useState("ALL");
+  const [currentTab, setCurrentTab] = useState(ALL);
 
-  const myAnime = useSelector((state) => state.myAnime.list);
+  const allAnime = useSelector((state) => state.myAnime.list);
+  const completedAnime = allAnime.filter((f) => f.tab === COMPLETED);
+  const droppedAnime = allAnime.filter((f) => f.tab === DROPPED);
+  const watchAnime = allAnime.filter((f) => f.tab === WATCH);
 
-  const ids = myAnime.map((m) => m.id);
+  const myAnime = () => {
+    switch (currentTab) {
+      case ALL:
+      default:
+        return allAnime;
+      case COMPLETED:
+        return completedAnime;
+      case DROPPED:
+        return droppedAnime;
+      case WATCH:
+        return watchAnime;
+    }
+  };
+
+  const ids = allAnime.map((m) => m.id);
 
   const dispatch = useDispatch();
 
@@ -122,7 +144,7 @@ const MyAnime = () => {
         options={tabOptions}
         defaultValue={{ value: currentTab, label: currentTab }}
       />
-      <MyAnimeItem anime={myAnime} />
+      <MyAnimeItem anime={myAnime()} tabOptions={tabOptions} />
     </Wrapper>
   );
 };
