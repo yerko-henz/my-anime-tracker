@@ -16,6 +16,12 @@ export const GlobalStyle = createGlobalStyle`
     -webkit-user-select: none;
     -o-user-select: none;
   }
+
+  body {
+    background: ${({ theme }) => theme.body};
+    color: ${({ theme }) => theme.text};
+    transition: all 0.50s linear;
+  }
 `;
 
 export const Flex = styled.div`

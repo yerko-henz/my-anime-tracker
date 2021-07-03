@@ -67,7 +67,7 @@ const REFRESH_SAVED_ANIME = gql`
 
 const MyAnime = () => {
   const [search, setSearch] = useState("");
-  const [currentTab, setCurrentTab] = useState(ALL);
+  const [currentTab, setCurrentTab] = useState(WATCHING);
 
   const allAnime = useSelector((state) => state.myAnime.list);
   const completedAnime = allAnime.filter((f) => f.tab === COMPLETED);
