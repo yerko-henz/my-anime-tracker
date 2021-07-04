@@ -17,7 +17,7 @@ export const GlobalStyle = createGlobalStyle`
     -o-user-select: none;
   }
 
-  body {
+  body, html {
     background: ${({ theme }) => theme.body};
     color: ${({ theme }) => theme.text};
     transition: all 0.50s linear;
@@ -37,11 +37,13 @@ export const StyledA = styled.a`
   align-self: flex-start;
 `;
 
-export const Grid = styled.div`
+export const CardGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 4rem;
-  margin: ${({ margin }) => margin || 0};
+  grid-template-columns: repeat(auto-fit, 380px);
+  grid-gap: 1rem;
+  justify-content: center;
+  width: ${({ margin }) => margin || "90%"};
+  margin: ${({ margin }) => margin || "2rem auto"};
 `;
 
 export const Button = styled.button`
@@ -65,6 +67,7 @@ export const Icon = styled.i`
 `;
 
 export const Img = styled.img`
+  border-radius: 8px;
   width: 100%;
   height: 350px;
 `;

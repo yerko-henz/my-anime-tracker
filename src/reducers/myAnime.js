@@ -29,22 +29,19 @@ export const slice = createSlice({
             }
           : null,
         tab: "PENDING",
+        showOptions: false,
       };
       state.list.push(animeSaved);
       updateLocalStorage(animeSaved.id, animeSaved);
     },
     deleteAnime: (state, action) => {
-      const index = state.list.findIndex(
-        (anime) => anime.id === action.payload.id
-      );
+      const index = findIndexById(action.payload.id, state.list);
 
       state.list.splice(index, 1);
       localStorage.removeItem(action.payload.id);
     },
     addEpisode: (state, action) => {
-      const index = state.list.findIndex(
-        (anime) => anime.id === action.payload.id
-      );
+      const index = findIndexById(action.payload.id, state.list);
 
       const result = state.list[index].watched + action.payload.value;
 
@@ -54,12 +51,15 @@ export const slice = createSlice({
       }
     },
     changeAnimeStatus: (state, action) => {
-      const index = state.list.findIndex(
-        (anime) => anime.id === action.payload.id
-      );
+      const index = findIndexById(action.payload.id, state.list);
 
       state.list[index].tab = action.payload.tab;
       updateLocalStorage(action.payload.id, state.list[index]);
+    },
+    toggleOptions: (state, action) => {
+      const index = findIndexById(action.payload.id, state.list);
+
+      state.list[index].showOptions = !state.list[index].showOptions;
     },
   },
 });
@@ -67,12 +67,15 @@ export const slice = createSlice({
 const updateLocalStorage = (id, item) =>
   localStorage.setItem(id, JSON.stringify(item));
 
+const findIndexById = (id, list) => list.findIndex((anime) => anime.id === id);
+
 export const {
   saveAnime,
   deleteAnime,
   getLSAnime,
   addEpisode,
   changeAnimeStatus,
+  toggleOptions,
 } = slice.actions;
 
 export default slice.reducer;
