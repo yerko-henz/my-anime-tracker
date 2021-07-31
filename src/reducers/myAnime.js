@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { secondsToDate } from "../helpers";
 
 export const slice = createSlice({
   name: "myAnime",

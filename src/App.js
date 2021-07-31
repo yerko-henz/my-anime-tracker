@@ -16,7 +16,7 @@ const client = new ApolloClient({
 });
 
 function App() {
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState("light");
 
   // useEffect(() => {
   //   const localTheme = localStorage.getItem("theme");

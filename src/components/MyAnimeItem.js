@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { secondsToDate } from "../helpers";
 
 import { Flex, Button, Width, Icon, Img } from "../styles/Global";
 import {
@@ -15,11 +16,19 @@ const MyAnimeItem = ({ anime, tabOptions }) => {
     const { nextEpisode } = props;
 
     if (nextEpisode) {
-      return `(${nextEpisode.episode}) ${nextEpisode.timeUntilAiring}`;
+      return `(${nextEpisode.episode}) ${secondsToDate(
+        nextEpisode.timeUntilAiring
+      )}`;
     } else {
       return "TBD";
     }
   }
+
+  useEffect(() => {
+    const watched = JSON.parse(localStorage.getItem(anime.id));
+    console.log("wtd", watched);
+  }, []);
+  const watched = JSON.parse(localStorage.getItem(anime.id)).watched;
 
   return (
     <>
@@ -42,7 +51,7 @@ const MyAnimeItem = ({ anime, tabOptions }) => {
             e.preventDefault();
             changeAnimeEpisode(anime.id, anime.watched - 1);
           }}
-          value={anime.watched}
+          value={watched}
           max={anime.episodes}
         />
         <Flex justify="space-between">
@@ -52,7 +61,7 @@ const MyAnimeItem = ({ anime, tabOptions }) => {
               nextEpisode: anime.nextAiringEpisode,
             })}
           </span>
-          <span>{`${anime.watched} of ${anime.episodes}`}</span>
+          <span>{`${watched} of ${anime.episodes || "TBD"}`}</span>
         </Flex>
         <Flex justify="flex-end" margin=".5rem 0 0 0">
           <Button onClick={() => setShowModal({ value: true, id: anime.id })}>
