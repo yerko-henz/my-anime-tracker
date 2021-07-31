@@ -53,11 +53,7 @@ const ListItem = ({ anime }) => {
             Trailer
           </StyledA>
         )}
-        {!isSaved && (
-          <button onClick={() => dispatch(saveAnime({ ...anime }))}>
-            Save
-          </button>
-        )}
+        {!isSaved && <button onClick={() => saveAnime(anime.id)}>Save</button>}
         {anime.idMal && (
           <StyledA href={MalLink} target="_blank" rel="noreferrer">
             MAL

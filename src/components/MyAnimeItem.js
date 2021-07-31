@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 
 import { Grid, Flex, Button, Width, Icon, Img } from "../styles/Global";
 import {
-  addEpisode,
+  changeAnimeEpisode,
   deleteAnime,
   changeAnimeStatus,
 } from "../reducers/myAnime";
@@ -11,11 +10,6 @@ import {
 const MyAnimeItem = ({ anime, tabOptions }) => {
   const [showModal, setShowModal] = useState({});
   const [formattedAnime, setFormattedAnime] = useState([]);
-  const dispatch = useDispatch();
-
-  function setEpisodeWatched(id, value) {
-    dispatch(addEpisode({ id, value }));
-  }
 
   function currentStatus(props) {
     const { nextEpisode } = props;
@@ -37,11 +31,11 @@ const MyAnimeItem = ({ anime, tabOptions }) => {
         <>
           <Width width="95%" className="box my-0" key={anime.id}>
             <h3
-              onClick={() => setEpisodeWatched(anime.id, 1)}
+              onClick={() => changeAnimeEpisode(anime.id, anime.watched + 1)}
               className="pointer no-double-click-selection"
               onContextMenu={(e) => {
                 e.preventDefault();
-                setEpisodeWatched(anime.id, -1);
+                changeAnimeEpisode(anime.id, anime.watched - 1);
               }}
             >
               {anime.title.romaji}
@@ -49,10 +43,10 @@ const MyAnimeItem = ({ anime, tabOptions }) => {
             <Img src={anime.coverImage.large} />
             <progress
               className="progress is-success is-small mt-4 pointer"
-              onClick={() => setEpisodeWatched(anime.id, 1)}
+              onClick={() => changeAnimeEpisode(anime.id, anime.watched + 1)}
               onContextMenu={(e) => {
                 e.preventDefault();
-                setEpisodeWatched(anime.id, -1);
+                changeAnimeEpisode(anime.id, anime.watched - 1);
               }}
               value={anime.watched}
               max={anime.episodes}
@@ -113,12 +107,7 @@ const MyAnimeItem = ({ anime, tabOptions }) => {
                           <div
                             class="dropdown-item"
                             onClick={() =>
-                              dispatch(
-                                changeAnimeStatus({
-                                  id: anime.id,
-                                  tab: tab.label,
-                                })
-                              )
+                              changeAnimeStatus(anime.id, tab.label)
                             }
                           >{`TO ${tab.label}`}</div>
                           <hr class="dropdown-divider" />
@@ -148,7 +137,7 @@ const MyAnimeItem = ({ anime, tabOptions }) => {
                 <button
                   className="button is-danger"
                   onClick={() => {
-                    dispatch(deleteAnime({ id: showModal.id }));
+                    deleteAnime(showModal.id);
                     setShowModal({ value: false, id: null });
                   }}
                 >

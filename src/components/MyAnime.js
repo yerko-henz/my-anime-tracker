@@ -44,27 +44,6 @@ const SEARCH_RESULTS = gql`
   }
 `;
 
-const REFRESH_SAVED_ANIME = gql`
-  query RefreshSaved($ids: [Int]) {
-    Page {
-      media(id_in: $ids) {
-        id
-        idMal
-        title {
-          romaji
-        }
-        coverImage {
-          large
-        }
-        averageScore
-        trailer {
-          id
-        }
-      }
-    }
-  }
-`;
-
 const MyAnime = () => {
   const [search, setSearch] = useState("");
   const [currentTab, setCurrentTab] = useState(WATCHING);
@@ -90,19 +69,6 @@ const MyAnime = () => {
         return pendingAnime;
     }
   };
-
-  const ids = allAnime.map((m) => m.id);
-
-  const dispatch = useDispatch();
-
-  const { loading, error, refreshed_data } = useQuery(REFRESH_SAVED_ANIME, {
-    variables: { ids },
-    fetchPolicy: "no-cache",
-  });
-
-  useEffect(() => {
-    console.log("data", refreshed_data);
-  }, [refreshed_data]);
 
   // useEffect(() => {
   //   console.log("d", data, "search", search);
