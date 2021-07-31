@@ -4,19 +4,13 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-import { Flex, StyledA } from "../styles/Global";
+import { Flex, StyledA, Img } from "../styles/Global";
 import { saveAnime } from "../reducers/myAnime";
 
 const Wrapper = styled.div`
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  border: 1px solid grey;
-`;
-
-const Img = styled.img`
-  width: 100%;
-  height: 350px;
 `;
 
 const StyledLink = styled(Link)`
@@ -37,7 +31,7 @@ const ListItem = ({ anime }) => {
   const isSaved = list.filter((f) => f.id === anime.id).length > 0;
 
   return (
-    <Wrapper>
+    <Wrapper className="box my-0">
       <Flex justify="space-between">
         <StyledLink to={`anime/${anime.title.romaji}`} key={anime.id}>
           {anime.title.romaji}

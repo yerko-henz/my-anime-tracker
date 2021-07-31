@@ -4,22 +4,9 @@ import styled from "styled-components";
 import Select from "react-select";
 
 import ListItem from "./ListItem";
-import { Flex } from "../styles/Global";
+import { Flex, CardGrid } from "../styles/Global";
 
 const Wrapper = styled.div`
-  .list-wrapper {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-gap: 1rem;
-
-    @media (max-width: 1024px) {
-      grid-template-columns: repeat(3, 1fr);
-    }
-    @media (min-width: 2560px) {
-      grid-template-columns: repeat(8, 1fr);
-    }
-  }
-
   .react-select {
     width: 200px;
     &:not(:first-child) {
@@ -136,15 +123,11 @@ const List = () => {
           />
         </Flex>
       </Flex>
-
-      <h3>
-        {season}, {year}
-      </h3>
-      <div className="list-wrapper">
+      <CardGrid>
         {data.Page.media.map((anime) => (
           <ListItem key={anime.id} anime={anime} />
         ))}
-      </div>
+      </CardGrid>
     </Wrapper>
   );
 };

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useQuery, gql } from "@apollo/client";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import Select from "react-select";
+import { CardGrid } from "../styles/Global";
 
 import MyAnimeItem from "./MyAnimeItem.js";
 
@@ -102,7 +103,12 @@ const MyAnime = () => {
         options={tabOptions}
         defaultValue={{ value: currentTab, label: currentTab }}
       />
-      <MyAnimeItem anime={myAnime()} tabOptions={tabOptions} />
+
+      <CardGrid>
+        {myAnime().map((anime) => (
+          <MyAnimeItem anime={anime} tabOptions={tabOptions} />
+        ))}
+      </CardGrid>
     </Wrapper>
   );
 };

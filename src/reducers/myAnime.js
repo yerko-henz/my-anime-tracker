@@ -10,8 +10,15 @@ export const slice = createSlice({
     getLSAnime: (state, action) => {
       state.list = action.payload; //.push(...lsAnime);
     },
+    toggleOptions: (state, action) => {
+      const index = findIndexById(action.payload.id, state.list);
+
+      state.list[index].showOptions = !state.list[index].showOptions;
+    },
   },
 });
+
+const findIndexById = (id, list) => list.findIndex((anime) => anime.id === id);
 
 const updateLocalStorage = (id, item) =>
   localStorage.setItem(id, JSON.stringify(item));
@@ -34,6 +41,6 @@ export const changeAnimeStatus = async (id, tab) => {
   updateLocalStorage(id, anime);
 };
 
-export const { getLSAnime } = slice.actions;
+export const { getLSAnime, toggleOptions } = slice.actions;
 
 export default slice.reducer;
