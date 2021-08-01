@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -23,12 +23,15 @@ const StyledLink = styled(Link)`
 `;
 
 const ListItem = ({ anime }) => {
-  const { list } = useSelector((state) => state.myAnime);
-  const dispatch = useDispatch();
+  const [isSaved, setIsSaved] = useState(false);
 
   const trailerLink = `https://www.youtube.com/watch?v=${anime.trailer?.id}`;
   const MalLink = `https://myanimelist.net/anime/${anime.idMal}`;
-  const isSaved = list.filter((f) => f.id === anime.id).length > 0;
+  // const isSaved = Boolean(localStorage.getItem(anime.id));
+
+  useEffect(() => {
+    setIsSaved(Boolean(localStorage.getItem(anime.id)));
+  }, [anime]);
 
   return (
     <Wrapper className="box my-0">
@@ -47,7 +50,16 @@ const ListItem = ({ anime }) => {
             Trailer
           </StyledA>
         )}
-        {!isSaved && <button onClick={() => saveAnime(anime.id)}>Save</button>}
+        {!isSaved && (
+          <button
+            onClick={() => {
+              saveAnime(anime.id);
+              setIsSaved(true);
+            }}
+          >
+            Save
+          </button>
+        )}
         {anime.idMal && (
           <StyledA href={MalLink} target="_blank" rel="noreferrer">
             MAL

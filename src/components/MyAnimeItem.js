@@ -8,10 +8,13 @@ import {
   changeAnimeStatus,
   toggleOptions,
 } from "../reducers/myAnime";
+import { useDispatch } from "react-redux";
 
 const MyAnimeItem = ({ anime, tabOptions }) => {
   const [showModal, setShowModal] = useState({});
   const forceUpdate = useState()[1].bind(null, {});
+
+  const dispatch = useDispatch();
 
   function currentStatus(props) {
     const { nextEpisode } = props;
@@ -25,7 +28,7 @@ const MyAnimeItem = ({ anime, tabOptions }) => {
     }
   }
 
-  const watched = JSON.parse(localStorage.getItem(anime.id)).watched;
+  const watched = JSON.parse(localStorage.getItem(anime.id))?.watched || 0;
 
   return (
     <>
@@ -79,7 +82,7 @@ const MyAnimeItem = ({ anime, tabOptions }) => {
           >
             <div className="dropdown-trigger">
               <Button
-                onClick={() => null} //(toggleOptions({ id: anime.id }))}
+                onClick={() => dispatch(toggleOptions({ id: anime.id }))}
                 className="button"
                 aria-haspopup="true"
                 aria-controls={anime.id}
@@ -129,8 +132,8 @@ const MyAnimeItem = ({ anime, tabOptions }) => {
           <footer className="modal-card-foot">
             <button
               className="button is-danger"
-              onClick={() => {
-                deleteAnime(showModal.id);
+              onClick={async () => {
+                dispatch(deleteAnime({ id: showModal.id }));
                 setShowModal({ value: false, id: null });
               }}
             >

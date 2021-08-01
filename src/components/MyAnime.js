@@ -71,6 +71,10 @@ const MyAnime = () => {
     }
   };
 
+  useEffect(() => {
+    console.log("all", allAnime, "cp", completedAnime, "wtc", watchingAnime);
+  }, [allAnime]);
+
   // useEffect(() => {
   //   console.log("d", data, "search", search);
   // }, [data]);
