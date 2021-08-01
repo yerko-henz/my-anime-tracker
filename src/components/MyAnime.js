@@ -106,7 +106,7 @@ const MyAnime = () => {
 
       <CardGrid>
         {myAnime().map((anime) => (
-          <MyAnimeItem anime={anime} tabOptions={tabOptions} />
+          <MyAnimeItem anime={anime} tabOptions={tabOptions} key={anime.id} />
         ))}
       </CardGrid>
     </Wrapper>

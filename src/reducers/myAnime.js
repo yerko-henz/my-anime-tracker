@@ -4,6 +4,7 @@ export const slice = createSlice({
   name: "myAnime",
   initialState: {
     list: [],
+    updating: false,
   },
   reducers: {
     getLSAnime: (state, action) => {
@@ -31,7 +32,7 @@ export const saveAnime = (id) =>
 export const deleteAnime = (id) => localStorage.removeItem(id);
 
 export const changeAnimeEpisode = async (id, watched) => {
-  const anime = await { ...localStorage.getItem(id), watched };
+  const anime = { ...JSON.parse(localStorage.getItem(id)), watched };
   updateLocalStorage(id, anime);
 };
 

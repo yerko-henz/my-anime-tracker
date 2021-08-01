@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { secondsToDate } from "../helpers";
 
 import { Flex, Button, Width, Icon, Img } from "../styles/Global";
@@ -11,6 +11,7 @@ import {
 
 const MyAnimeItem = ({ anime, tabOptions }) => {
   const [showModal, setShowModal] = useState({});
+  const forceUpdate = useState()[1].bind(null, {});
 
   function currentStatus(props) {
     const { nextEpisode } = props;
@@ -24,21 +25,21 @@ const MyAnimeItem = ({ anime, tabOptions }) => {
     }
   }
 
-  useEffect(() => {
-    const watched = JSON.parse(localStorage.getItem(anime.id));
-    console.log("wtd", watched);
-  }, []);
   const watched = JSON.parse(localStorage.getItem(anime.id)).watched;
 
   return (
     <>
       <Width width="95%" className="box my-0" key={anime.id}>
         <h3
-          onClick={() => changeAnimeEpisode(anime.id, anime.watched + 1)}
+          onClick={async () => {
+            await changeAnimeEpisode(anime.id, watched + 1);
+            forceUpdate();
+          }}
           className="pointer no-double-click-selection"
-          onContextMenu={(e) => {
+          onContextMenu={async (e) => {
             e.preventDefault();
-            changeAnimeEpisode(anime.id, anime.watched - 1);
+            await changeAnimeEpisode(anime.id, watched - 1);
+            forceUpdate();
           }}
         >
           {anime.title.romaji}
@@ -46,10 +47,14 @@ const MyAnimeItem = ({ anime, tabOptions }) => {
         <Img src={anime.coverImage.large} />
         <progress
           className="progress is-success is-small mt-4 pointer"
-          onClick={() => changeAnimeEpisode(anime.id, anime.watched + 1)}
-          onContextMenu={(e) => {
+          onClick={async () => {
+            await changeAnimeEpisode(anime.id, watched + 1);
+            forceUpdate();
+          }}
+          onContextMenu={async (e) => {
             e.preventDefault();
-            changeAnimeEpisode(anime.id, anime.watched - 1);
+            await changeAnimeEpisode(anime.id, watched - 1);
+            forceUpdate();
           }}
           value={watched}
           max={anime.episodes}
@@ -72,10 +77,10 @@ const MyAnimeItem = ({ anime, tabOptions }) => {
           <div
             className={anime.showOptions ? "dropdown is-active" : "dropdown"}
           >
-            <div class="dropdown-trigger">
+            <div className="dropdown-trigger">
               <Button
                 onClick={() => null} //(toggleOptions({ id: anime.id }))}
-                class="button"
+                className="button"
                 aria-haspopup="true"
                 aria-controls={anime.id}
               >
@@ -87,18 +92,18 @@ const MyAnimeItem = ({ anime, tabOptions }) => {
                 </span>
               </Button>{" "}
             </div>
-            <div class="dropdown-menu" id={anime.id} role="menu">
-              <div class="dropdown-content">
+            <div className="dropdown-menu" id={anime.id} role="menu">
+              <div className="dropdown-content">
                 {tabOptions
                   .filter((f) => f.value !== "ALL")
                   .filter((f) => f.value !== anime.tab)
                   .map((tab) => (
                     <div key={tab.value}>
                       <div
-                        class="dropdown-item"
+                        className="dropdown-item"
                         onClick={() => changeAnimeStatus(anime.id, tab.label)}
                       >{`TO ${tab.label}`}</div>
-                      <hr class="dropdown-divider" />
+                      <hr className="dropdown-divider" />
                     </div>
                   ))}
               </div>
