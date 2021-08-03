@@ -10,6 +10,7 @@ export const slice = createSlice({
       state.list = action.payload.map((anime) => ({
         ...anime,
         showOptions: false,
+        tab: JSON.parse(localStorage.getItem(anime.id)).tab,
       }));
     },
     deleteAnime: (state, action) => {
@@ -24,6 +25,13 @@ export const slice = createSlice({
       const index = findIndexById(action.payload.id, state.list);
 
       state.list[index].showOptions = !state.list[index].showOptions;
+    },
+    changeTab: (state, action) => {
+      const index = findIndexById(action.payload.id, state.list);
+
+      state.list[index].tab = action.payload.tab;
+
+      changeAnimeProperty(action.payload.id, action.payload.tab, "tab");
     },
   },
 });
@@ -41,16 +49,12 @@ export const saveAnime = (id) =>
 
 // export const deleteAnime = (id) => localStorage.removeItem(id);
 
-export const changeAnimeEpisode = async (id, watched) => {
-  const anime = { ...JSON.parse(localStorage.getItem(id)), watched };
+export const changeAnimeProperty = async (id, newValue, key) => {
+  const anime = { ...JSON.parse(localStorage.getItem(id)), [key]: newValue };
   updateLocalStorage(id, anime);
 };
 
-export const changeAnimeStatus = async (id, tab) => {
-  const anime = await { ...localStorage.getItem(id), tab };
-  updateLocalStorage(id, anime);
-};
-
-export const { getLSAnime, deleteAnime, toggleOptions } = slice.actions;
+export const { getLSAnime, deleteAnime, changeTab, toggleOptions } =
+  slice.actions;
 
 export default slice.reducer;

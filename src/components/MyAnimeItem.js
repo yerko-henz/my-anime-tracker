@@ -3,10 +3,10 @@ import { secondsToDate } from "../helpers";
 
 import { Flex, Button, Width, Icon, Img } from "../styles/Global";
 import {
-  changeAnimeEpisode,
+  changeAnimeProperty,
   deleteAnime,
-  changeAnimeStatus,
   toggleOptions,
+  changeTab,
 } from "../reducers/myAnime";
 import { useDispatch } from "react-redux";
 
@@ -35,13 +35,13 @@ const MyAnimeItem = ({ anime, tabOptions }) => {
       <Width width="95%" className="box my-0" key={anime.id}>
         <h3
           onClick={async () => {
-            await changeAnimeEpisode(anime.id, watched + 1);
+            await changeAnimeProperty(anime.id, watched + 1, "watched");
             forceUpdate();
           }}
           className="pointer no-double-click-selection"
           onContextMenu={async (e) => {
             e.preventDefault();
-            await changeAnimeEpisode(anime.id, watched - 1);
+            await changeAnimeProperty(anime.id, watched - 1, "watched");
             forceUpdate();
           }}
         >
@@ -51,12 +51,12 @@ const MyAnimeItem = ({ anime, tabOptions }) => {
         <progress
           className="progress is-success is-small mt-4 pointer"
           onClick={async () => {
-            await changeAnimeEpisode(anime.id, watched + 1);
+            await changeAnimeProperty(anime.id, watched + 1, "watched");
             forceUpdate();
           }}
           onContextMenu={async (e) => {
             e.preventDefault();
-            await changeAnimeEpisode(anime.id, watched - 1);
+            await changeAnimeProperty(anime.id, watched - 1, "watched");
             forceUpdate();
           }}
           value={watched}
@@ -104,7 +104,10 @@ const MyAnimeItem = ({ anime, tabOptions }) => {
                     <div key={tab.value}>
                       <div
                         className="dropdown-item"
-                        onClick={() => changeAnimeStatus(anime.id, tab.label)}
+                        onClick={() => {
+                          dispatch(changeTab({ id: anime.id, tab: tab.label }));
+                          dispatch(toggleOptions({ id: anime.id }));
+                        }}
                       >{`TO ${tab.label}`}</div>
                       <hr className="dropdown-divider" />
                     </div>
